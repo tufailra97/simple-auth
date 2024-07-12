@@ -1,7 +1,13 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LoginDto } from './dto/dtos';
+import { UserDto } from '../users/dto/dtos';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -10,6 +16,8 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login' })
+  @ApiResponse({ status: 200, type: UserDto })
+  @ApiBadRequestResponse({ type: BadRequestException })
   async login(@Body() loginDto: LoginDto) {
     const user = await this.authService.login(loginDto);
 
