@@ -4,7 +4,6 @@ import {
   ConflictException,
   Controller,
   Get,
-  Param,
   Patch,
   Post,
   Query,
@@ -19,8 +18,8 @@ import {
 import { SuccessDto } from 'src/dtos/success.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ResendVerificationEmailDto, UserDto } from './dto/dtos';
-import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersService } from './users.service';
 
 @ApiTags('Users')
 @Controller('users')
