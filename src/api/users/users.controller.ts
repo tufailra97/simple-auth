@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -15,7 +16,9 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { GetUser } from 'src/decorators';
 import { SuccessDto } from 'src/dtos/success.dto';
+import { JwtGuard } from 'src/guards';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ResendVerificationEmailDto, UserDto } from './dto/dtos';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -35,16 +38,17 @@ export class UsersController {
   }
 
   @Patch()
+  @UseGuards(JwtGuard)
   @ApiOperation({ summary: 'Update the current user' })
   @ApiOkResponse({ type: SuccessDto })
   @ApiBadRequestResponse({ type: BadRequestException })
   @ApiConflictResponse({ type: ConflictException })
-  update(@Body() updateUserDto: UpdateUserDto) {
-    // TODO: update user id with the current user id
-    return this.usersService.updateOneById('', updateUserDto);
+  update(@Body() updateUserDto: UpdateUserDto, @GetUser() user: UserDto) {
+    return this.usersService.updateOneById(user.id, updateUserDto);
   }
 
   @Get('self')
+  @UseGuards(JwtGuard)
   @ApiOperation({ summary: 'Get the current user' })
   @ApiOkResponse({ type: UserDto })
   findSelf() {
