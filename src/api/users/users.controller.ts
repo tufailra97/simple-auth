@@ -51,8 +51,8 @@ export class UsersController {
   @UseGuards(JwtGuard)
   @ApiOperation({ summary: 'Get the current user' })
   @ApiOkResponse({ type: UserDto })
-  findSelf() {
-    return this.usersService.findOneByEmail('');
+  findSelf(@GetUser() user: UserDto) {
+    return this.usersService.findOneByEmail(user.email);
   }
 
   @Post('resend-verification-email')
