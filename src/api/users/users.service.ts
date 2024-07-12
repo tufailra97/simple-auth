@@ -4,13 +4,13 @@ import {
   Injectable,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { addDays, isFuture } from 'date-fns';
+import { configs } from 'src/configs';
 import { SuccessDto } from 'src/dtos/success.dto';
+import { EmailService } from 'src/services';
 import { PrismaService } from 'src/services/prima-service/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/dtos';
-import { EmailService } from 'src/services';
-import { addDays, isFuture } from 'date-fns';
-import { configs } from 'src/configs';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 const getVerificationDate = () => addDays(new Date(), 7);
@@ -147,7 +147,7 @@ export class UsersService {
   }
 
   private hashPassword(password: string) {
-    return bcrypt.hashSync(password, 12);
+    return bcrypt.hashSync(password, configs.SALT_ROUNDS);
   }
 
   private async sendVerificationEmail(
