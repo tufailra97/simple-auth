@@ -8,11 +8,27 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  firstName String?
-  lastName  String?
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String                  @id @default(cuid())
+  email              String                  @unique
+  firstName          String                  @map("first_name")
+  lastName           String                  @map("last_name")
+  password           String
+  isVerified         Boolean                 @default(false) @map("is_verified")
+  createdAt          DateTime                @default(now()) @map("created_at")
+  updatedAt          DateTime                @updatedAt @map("updated_at")
+  verificationTokens UserVerificationToken[]
+
+  @@map("users")
+}
+
+model UserVerificationToken {
+  id         String   @id @default(cuid()) // use id as token
+  validUntil DateTime @map("valid_until")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  isValid    Boolean  @default(true) @map("is_valid")
+  userId     String   @map("user_id")
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("user_verification_tokens")
 }
