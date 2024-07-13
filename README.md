@@ -6,5 +6,12 @@ See `/api` for docs
 
 ```bash
 $ yarn install
-$ yarn start:dev
+$ yarn db:migrate
+$ yarn run start:dev
+```
+
+## Start prisma studio
+
+```bash
+$ yarn db:studio
 ```
