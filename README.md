@@ -6,5 +6,5 @@ See `/api` for docs
 
 ```bash
 $ yarn install
-$ yarn run start:dev
+$ yarn start:dev
 ```
